@@ -23,10 +23,11 @@ module.exports = {
         const userid = _cookies.get('IBIRD_USERID') || _cookies.get('IBIRD_UNIONID') || _query.userid || _body.userid;
         const unionid = userid || _query.unionid || _body.unionid;
         try {
-            ctx.body = fields.get(key, unionid);
+            Object.assign(_reponse, { data: fields.get(key, unionid) });
         } catch (e) {
-            ctx.body = Object.assign(_reponse, { errmsg: `获取字段列表失败：${e.message}`, errcode: '500' });
+            Object.assign(_reponse, { errmsg: `获取字段列表失败：${e.message}`, errcode: '500' });
         }
+        ctx.body = _reponse;
     },
     weights: 1000
 };
