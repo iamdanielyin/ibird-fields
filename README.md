@@ -184,7 +184,7 @@ const fields = require('ibird-fields');
 };
 ```
 
-> Tips：服务列表是一个以服务编码为key的对象类型。
+> Tips：字段列表是一个以服务编码为key的对象类型。
 
 ## 内部接口
 
