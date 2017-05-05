@@ -8,9 +8,9 @@ const fields = require('../index');
 
 module.exports = {
     middleware: async (ctx, next) => {
-        const _originalUrl = ctx.originalUrl;
+        const _pathname = ctx.req._parsedUrl.pathname;
         const _method = ctx.req.method;
-        const key = `${_originalUrl}|${_method.toUpperCase()}`;
+        const key = `${_pathname}|${_method.toUpperCase()}`;
 
         const _query = ctx.query;
         const _cookies = ctx.cookies;

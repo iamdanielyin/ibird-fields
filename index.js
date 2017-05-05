@@ -56,18 +56,24 @@ app.users = (obj) => {
 app.get = (uri, unionid) => {
     if (typeof cache.fields !== 'object') return {};
     if (!unionid) return cache.fields[uri];
-    if (typeof cache.users !== 'object' || typeof cache.users[unionid] !== 'object') return {};
-
-    const _user = cache.users[unionid][uri];
-    const _fields = cache.fields[uri];
-
-    if (!Array.isArray(_user) || typeof _fields !== 'object') return {};
 
     const result = {};
-    for (const key in _fields) {
-        if (_user.indexOf(key) < 0) continue;
-        result[key] = _fields[key];
+    if (typeof cache.users === 'object' && Object.keys(cache.users).length > 0) {
+        if (typeof cache.users[unionid] !== 'object') return {};
+
+        const _user = cache.users[unionid][uri];
+        const _fields = cache.fields[uri];
+
+        if (!Array.isArray(_user) || typeof _fields !== 'object') return {};
+
+        for (const key in _fields) {
+            if (_user.indexOf(key) < 0) continue;
+            result[key] = _fields[key];
+        }
+    } else {
+        Object.assign(result, cache.fields[uri]);
     }
+
     return result;
 };
 
