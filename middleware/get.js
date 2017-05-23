@@ -6,28 +6,25 @@
  */
 const fields = require('../index');
 
-module.exports = {
-    middleware: async (ctx, next) => {
-        const _pathname = ctx.req._parsedUrl.pathname;
-        const _method = ctx.req.method;
-        const key = `${_pathname}|${_method.toUpperCase()}`;
+module.exports = async (ctx, next) => {
+    const _pathname = ctx.req._parsedUrl.pathname;
+    const _method = ctx.req.method;
+    const key = `${_pathname}|${_method.toUpperCase()}`;
 
-        const _query = ctx.query;
-        const _cookies = ctx.cookies;
-        const _body = ctx.request.body || {};
-        const _reponse = { data: {}, errmsg: null, errcode: null };
+    const _query = ctx.query;
+    const _cookies = ctx.cookies;
+    const _body = ctx.request.body || {};
+    const _reponse = { data: {}, errmsg: null, errcode: null };
 
-        const ibird_fields = _query.ibird_fields || _body.ibird_fields;
-        if (!ibird_fields) return await next();
+    const ibird_fields = _query.ibird_fields || _body.ibird_fields;
+    if (!ibird_fields) return await next();
 
-        const userid = _cookies.get('IBIRD_USERID') || _cookies.get('IBIRD_UNIONID') || _query.userid || _body.userid;
-        const unionid = userid || _query.unionid || _body.unionid;
-        try {
-            Object.assign(_reponse, { data: fields.get(key, unionid) });
-        } catch (e) {
-            Object.assign(_reponse, { errmsg: `获取字段列表失败：${e.message}`, errcode: '500' });
-        }
-        ctx.body = _reponse;
-    },
-    weights: 1000
+    const userid = _cookies.get('IBIRD_USERID') || _cookies.get('IBIRD_UNIONID') || _query.userid || _body.userid;
+    const unionid = userid || _query.unionid || _body.unionid;
+    try {
+        Object.assign(_reponse, { data: fields.get(key, unionid) });
+    } catch (e) {
+        Object.assign(_reponse, { errmsg: `获取字段列表失败：${e.message}`, errcode: '500' });
+    }
+    ctx.body = _reponse;
 };
