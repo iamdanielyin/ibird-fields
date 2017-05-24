@@ -7,7 +7,6 @@
 
 const raml = require('ibird-raml');
 const utility = require('ibird-utils');
-const getMiddleware = require('./middleware/get');
 const app = {};
 
 module.exports = app;
@@ -158,5 +157,5 @@ app.fields = (fields) => {
  * @param app
  */
 app.middleware = (app) => {
-    app.use(getMiddleware);
+    app.use(require('./middleware/get'));
 };
